@@ -1,0 +1,6 @@
+﻿  pch.cpp
+  dllmain.cpp
+C:\Users\false\Desktop\NoDeader\NoDeader\dllmain.cpp(43,38): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\false\Desktop\NoDeader\NoDeader\dllmain.cpp(44,39): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\false\Desktop\NoDeader\NoDeader\dllmain.cpp(45,37): warning C4305: 'initializing': truncation from 'double' to 'float'
+  NoDeader.vcxproj -> C:\Users\false\Desktop\NoDeader\NoDeader\x64\Debug\NoDeader.dll
