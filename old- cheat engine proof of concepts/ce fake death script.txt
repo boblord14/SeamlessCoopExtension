@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable>
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1337271236</ID>
+      <Description>"c example param patcher script work"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{cscript ontimeout=break gensymbols=false}
+// C work to simulate death function without actually dying
+// Requires CSCRIPT extensions and the event flags section of the table to be opened, as well as the apply/remove effect script
+[ENABLE]
+{$c}
+#include &lt;tga/actuallyusefulheaderfiles.h&gt;
+#include &lt;tga/params.h&gt;
+
+int enabled;
+
+int* buildPHealthPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr);
+    return ((int*)(ptr + 0x138));
+}
+
+int* buildIdleAnimPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr + 0x58);
+    return ((int*)(ptr + 0x18));
+}
+
+int* buildCurrentAnimPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr + 0x18);
+    return ((int*)(ptr + 0x20));
+}
+
+int getPMaxHp(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr);
+    return (int)(*(int*)(ptr + 0x13C));
+}
+
+float* buildXCoordPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr + 0x68);
+    return ((float*)(ptr + 0x70));
+}
+
+float* buildYCoordPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr + 0x68);
+    return ((float*)(ptr + 0x78));
+}
+
+float* buildZCoordPointer(void* WorldChrMan){
+    uintptr_t ptr = (uintptr_t)WorldChrMan;
+    ptr = *(uintptr_t*)(ptr + 0x10EF8);
+    ptr = *(uintptr_t*)(ptr);
+    ptr = *(uintptr_t*)(ptr + 0x190);
+    ptr = *(uintptr_t*)(ptr + 0x68);
+    return ((float*)(ptr + 0x74));
+}
+
+  extern void* WorldChrMan;
+  float defaultXCoord = (-3.507208586);
+  float defaultYCoord = (-0.8775705099);
+  float defaultZCoord = (2.595876455);
+
+DWORD WINAPI ThreadFunc(void* data) {
+
+  int* currentAnim = buildCurrentAnimPointer(WorldChrMan);
+  int* idleAnim = buildIdleAnimPointer(WorldChrMan);
+  int* pHealth = buildPHealthPointer(WorldChrMan);
+  float* xCoord = buildXCoordPointer(WorldChrMan);
+  float* yCoord = buildYCoordPointer(WorldChrMan);
+  float* zCoord = buildZCoordPointer(WorldChrMan);
+
+
+  while(enabled == 1){
+
+        if(*pHealth &lt; 1){
+            *pHealth = 1;//works fine without nodead, may fail with aux. will flip nodead later along
+            Sleep(1000);
+            CELUA_ExecuteFunction("ef.setFlag(1024622001, 1)");
+            CELUA_ExecuteFunction("ae.ApplyEffect(7202001)");
+            Sleep(2500);
+            if(*currentAnim != 67011){
+                *idleAnim = 67011;
+            }
+
+            //applyeffect for id 36100(useless generic effect for param patcher)
+            //throw character flags(no hit, no dead, no attack, no move, etc) just for safety
+            *xCoord = defaultXCoord;
+            *yCoord = defaultYCoord;
+            *zCoord = defaultZCoord;
+
+            *pHealth = getPMaxHp(WorldChrMan);
+            Sleep(3500);
+            //consumable replenish? need manually call functions w/ args via c code
+            *idleAnim = 63020;
+            CELUA_ExecuteFunction("ef.setFlag(1024622001, 0)");
+            CELUA_ExecuteFunction("ae.RemoveEffect(7202001)");
+        }else{
+            Sleep(255);
+        }
+
+    }
+
+  return 0;
+}
+
+HANDLE mainThread;
+
+int on_enable() {
+    enabled = 1;
+    //param patcher enable/data goes here for 36100(offset of 0x184) effect vfx to 130000
+    mainThread = CreateThread(NULL, 0, ThreadFunc, NULL, 0, NULL);
+
+    return 0;
+}
+
+
+int on_disable() {
+    //dont forget param patcher disable here
+
+    char output[255];
+    FILE *fp;
+    fp  = fopen ("C://ProgramData//the-grand-archives//data.txt", "a+");//file output for testing
+    sprintf(output, "\nThread works successfully");
+    fwrite(output,1,sizeof(output),fp);
+    fclose(fp);
+
+    enabled = 0;
+    WaitForSingleObject(mainThread, INFINITE);
+    CloseHandle(mainThread);
+
+    return 0;
+}
+
+{$asm}
+{$lua}
+if syntaxcheck then return end
+
+autoAssemble([[
+loadlibrary(luaclient-x86_64.dll)
+]])
+openLuaServer('CELUASERVER')
+{$asm}
+[DISABLE]
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1337271237</ID>
+      <Description>"Apply/RemoveEffect"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(SpecialEffect_Add,512,eldenring.exe)
+
+registersymbol(SpecialEffect_Add)
+
+aobscanmodule(SpeEffect_add,eldenring.exe,48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC ???????? 0F2805 ???????? 48 8B F1 0F280D ???????? 48 8D 48 88)
+registersymbol(SpeEffect_add)
+
+
+alloc(SpEffectID,4)
+
+registersymbol(SpEffectID)
+
+alloc(SpecialEffect_Erase,512,eldenring.exe)
+registersymbol(SpecialEffect_Erase)
+
+alloc(SpEffectID_E,4)
+registersymbol(SpEffectID_E) //2004[8]
+
+aobscanmodule(SpeEffect_Erase,eldenring.exe,48 83 EC 28 8B C2 48 8B 51 08 48 85 D2 ???? 90)
+registersymbol(SpeEffect_Erase)
+
+
+
+SpEffectID:
+ dd #15022
+
+SpecialEffect_Add:
+mov edx,[SpEffectID]
+mov rcx,[WorldChrMan]
+mov rcx,[rcx+1E508]
+xor r8d,r8d
+sub rsp,48
+call SpeEffect_add
+add rsp,48
+ret
+
+
+SpEffectID_E:
+ dd #15022
+
+SpecialEffect_Erase:
+mov edx,[SpEffectID_E]
+mov rcx,[WorldChrMan]
+mov rcx,[rcx+1E508]
+mov rcx,[rcx+178]
+sub rsp,48
+call SpeEffect_Erase
+add rsp,48
+ret
+
+{$lua}
+if syntaxcheck then return end
+ae = ae or {}
+
+function ae.ApplyEffect(id)
+  executeCodeEx(0, -1, "SpecialEffect_Add", 1, id)
+end
+
+function ae.RemoveEffect(id)
+  executeCodeEx(0, -1, "SpecialEffect_Erase", 1, id)
+end
+
+{$asm}
+[DISABLE]
+
+dealloc(SpecialEffect_Erase)
+unregistersymbol(SpecialEffect_Erase)
+
+dealloc(SpEffectID_E)
+unregistersymbol(SpEffectID_E)
+
+unregistersymbol(SpeEffect_Erase)
+
+
+dealloc(SpecialEffect_Add)
+unregistersymbol(SpecialEffect_Add)
+
+dealloc(SpEffectID)
+unregistersymbol(SpEffectID)
+
+unregistersymbol(SpeEffect_add)
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+</CheatTable>
