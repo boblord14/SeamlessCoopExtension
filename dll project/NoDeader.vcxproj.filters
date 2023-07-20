@@ -33,6 +33,9 @@
     <ClInclude Include="PointerChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EventFlag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

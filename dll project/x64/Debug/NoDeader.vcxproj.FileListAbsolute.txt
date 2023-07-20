@@ -1,1 +1,2 @@
 C:\Users\false\Desktop\NoDeader\NoDeader\x64\Debug\NoDeader.dll
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\x64\Debug\NoDeader.dll
