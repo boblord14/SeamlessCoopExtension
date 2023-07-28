@@ -149,6 +149,13 @@ namespace PointerChain {
 		PtrChainBase(const PtrChainBase& other) : base(other.base), offsets(other.offsets) {}
 		PtrChainBase(PtrChainBase&& other) : base(std::move(other.base)), offsets(std::move(other.offsets)) {}
 
+		PtrChainBase& PtrChainBase::operator= (const PtrChainBase& a) {
+			this->base = a->base;
+			this->offsets = a->offsets;
+
+			return this;
+		}
+
 		// Create a chain with a new pointed to type.
 		template <typename TOther> POINTERCHAIN_FORCE_INLINE constexpr auto to()
 		{
