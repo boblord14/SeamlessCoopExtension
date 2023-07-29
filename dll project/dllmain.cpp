@@ -8,7 +8,7 @@
 using namespace ModUtils;
 
 using FnSetEventFlag = void (*)(const uint64_t event_man, uint32_t* event_id, bool state);
-using FnApplyEffect = void (*)(void* ChrIns, int spEffectId, int param_3); //param_3 must be set to 0
+using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
 using FnEraseEffect = void (*)(void* CSSpecialEffect, int spEffectId);
 
 
@@ -16,6 +16,7 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 {
 	ModuleData EldenRingData("eldenring.exe");
 	Signature worldChrManSig = Signature("48 8B 05 ?? ?? ?? ?? 48 85 C0 74 0F 48 39 88");
+
 	Signature spEffectApplyCall = Signature("48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC ?? ?? ?? ?? 0F 28 05 ?? ?? ?? ?? 48 8B F1 0F 28 0D ?? ?? ?? ?? 48 8D 48 88");
 	Signature spEffectRemoveCall = Signature("48 83 EC 28 8B C2 48 8B 51 08 48 85 D2 ?? ?? 90");
 	Signature eventFlagManager = Signature("48 8B 3D ?? ?? ?? ?? 48 85 FF ?? ?? 32 C0 E9");
@@ -42,6 +43,11 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	float defaultZCoord = (2.595);
 	uint32_t flagid = 1024622001;
 	uintptr_t WorldChrMan;
+
+	Log("apply call");
+	Log(speApplyCallIns);
+	Log("remove call");
+	Log(speRemoveCallIns);
 
 	while (true) {
 		
@@ -72,9 +78,13 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					auto zCoord = PointerChain::make<float>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x68, 0x74);
 					*playerHP = 1;
 					Sleep(1000);
-					
+
 					setEventFlag((uint64_t) *eventFlagMan, &flagid, 1);
-					//applyEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508), 7202001, 0);
+
+					auto chrIns = *PointerChain::make<uintptr_t*>(WorldChrMan, 0x10EF8);
+					applyEffect(&chrIns, 7202001);
+
+
 					Sleep(2500);
 					if (*currentAnim != 67011) {
 						*idleAnim = 67011;
@@ -86,7 +96,7 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					Sleep(3500);
 					*idleAnim = 63020;
 					setEventFlag((uint64_t)*eventFlagMan, &flagid, 0);
-				//	removeEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508, 0x178), 7202001);
+				//	removeEffect(*PointerChain::make<void*>(WorldChrMan, 0x10EF8, 0x178), 7202001);
 				}
 			}
 			else {
