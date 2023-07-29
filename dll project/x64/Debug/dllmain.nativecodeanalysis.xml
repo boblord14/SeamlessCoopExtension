@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\</FILEPATH>
+      <FILENAME>Signature.h</FILENAME>
+      <LINE>121</LINE>
+      <COLUMN>43</COLUMN>
+    </SFA>
+    <DEFECTCODE>6297</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow.  Results might not be an expected value.</DESCRIPTION>
+    <FUNCTION>Signature::{ctor}</FUNCTION>
+    <DECORATED>??0Signature@@QEAA@PEBDH@Z</DECORATED>
+    <FUNCLINE>97</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\</FILEPATH>
+      <FILENAME>Signature.h</FILENAME>
+      <LINE>121</LINE>
+      <COLUMN>43</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '&lt;&lt;' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '&lt;&lt;' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>Signature::{ctor}</FUNCTION>
+    <DECORATED>??0Signature@@QEAA@PEBDH@Z</DECORATED>
+    <FUNCLINE>97</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\</FILEPATH>
+      <FILENAME>Signature.h</FILENAME>
+      <LINE>191</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '+' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '+' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>Signature::GetRelativeOffset</FUNCTION>
+    <DECORATED>?GetRelativeOffset@Signature@@QEAAPEAXHH@Z</DECORATED>
+    <FUNCLINE>183</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,5 +1,1 @@
-﻿  dllmain.cpp
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\dllmain.cpp(43,38): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\dllmain.cpp(44,39): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\dllmain.cpp(45,37): warning C4305: 'initializing': truncation from 'double' to 'float'
-  NoDeader.vcxproj -> C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\x64\Debug\NoDeader.dll
+﻿  NoDeader.vcxproj -> C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dll project\x64\Debug\NoDeader.dll

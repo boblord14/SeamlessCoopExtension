@@ -226,6 +226,13 @@ namespace PointerChain {
 			}
 		}
 
+		POINTERCHAIN_FORCE_INLINE constexpr void operator= (const PtrChainBase& a) {
+			this->base = a->base;
+			this->offsets = a->offsets;
+
+			return this;
+		}
+
 		// Comparison operator for nullptr.
 		POINTERCHAIN_FORCE_INLINE constexpr bool operator != (std::nullptr_t null) noexcept
 		{
