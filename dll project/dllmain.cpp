@@ -25,15 +25,15 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	// This pointer when derefenced and at a character is where the stuff begins.
 	void** WorldChrManIns = (void**)worldChrManSig.Scan(&EldenRingData, 0x3, 0x7);
 
-	//void** speApplyCallIns = (void**)spEffectApplyCall.Scan(&EldenRingData);//unsure if this type is right. probably not but its not like i can test it rn
-	//void** speRemoveCallIns = (void**)spEffectRemoveCall.Scan(&EldenRingData);
+	void** speApplyCallIns = (void**)spEffectApplyCall.Scan(&EldenRingData);//unsure if this type is right. probably not but its not like i can test it rn
+	void** speRemoveCallIns = (void**)spEffectRemoveCall.Scan(&EldenRingData);
 	void** eventSetIns = (void**)eventFlagSetCall.Scan(&EldenRingData);
 	void** eventFlagMan = (void**)eventFlagManager.Scan(&EldenRingData);
 
 
 	FnSetEventFlag setEventFlag = reinterpret_cast<FnSetEventFlag>(reinterpret_cast<uint8_t*>(eventSetIns));
-//	FnApplyEffect applyEffect = reinterpret_cast<FnApplyEffect>(reinterpret_cast<uint8_t*>(speApplyCallIns));
-	//FnEraseEffect removeEffect = reinterpret_cast<FnEraseEffect>(reinterpret_cast<uint8_t*>(speRemoveCallIns));
+	FnApplyEffect applyEffect = reinterpret_cast<FnApplyEffect>(reinterpret_cast<uint8_t*>(speApplyCallIns));
+	FnEraseEffect removeEffect = reinterpret_cast<FnEraseEffect>(reinterpret_cast<uint8_t*>(speRemoveCallIns));
 	
 	AllocConsole();
 	FILE* f;
@@ -45,8 +45,8 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	float defaultZCoord = (2.595876455);
 
 
-//	Log("speApplyCallIns");
-//	Log(speApplyCallIns); //unsure if this is correct but im 80% sure it is
+	Log("speApplyCallIns");
+	Log(speApplyCallIns); //unsure if this is correct but im 80% sure it is
 	Log(eventFlagMan);
 
 
@@ -81,9 +81,9 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					auto zCoord = PointerChain::make<float>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x68, 0x74);
 					*playerHP = 1;
 					Sleep(1000);
-					setEventFlag(eventFlagMan, 1024622001, 1, 0);
+					setEventFlag(*eventFlagMan, 1024622001, 1, 0);
 					//set flag 1024622001 to 1
-		//			applyEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508), 7202001, 0);
+					applyEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508), 7202001, 0);
 					//apply effect 7202001
 					Sleep(2500);
 					if (*currentAnim != 67011) {
@@ -95,9 +95,9 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					*playerHP = *pMaxHP;
 					Sleep(3500);
 					*idleAnim = 63020;
-					setEventFlag(eventFlagMan, 1024622001, 0, 0);
+					setEventFlag(*eventFlagMan, 1024622001, 0, 0);
 					//set flag 1024622001 to 0
-	//				removeEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508, 0x178), 7202001);
+					removeEffect(*PointerChain::make<void*>(WorldChrMan, 0x1E508, 0x178), 7202001);
 					//remove effect 7202001
 				}
 			}
