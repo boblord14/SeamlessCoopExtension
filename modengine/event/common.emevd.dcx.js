@@ -6571,14 +6571,14 @@ $Event(1024622222, Default, function() {
 
 
     WaitFor(EventFlag(1024622001));
-    SetSpEffect(10000, 7202001);
+    //   SetSpEffect(10000, 7202001);
     WaitFixedTimeSeconds(0.5);
     DisplayBanner(TextBannerType.YouDied);
-    WaitFixedTimeSeconds(2);
+    WaitFixedTimeSeconds(3);
     FadeToBlack(100, 1, true, 0);
     BonfirelikeRecovery();
     WaitFor(!EventFlag(1024622001));
-    ClearSpEffect(10000, 7202001);
+    //  ClearSpEffect(10000, 7202001);
     FadeToBlack(0, 0, false, 0);
     RestartEvent();
 });
