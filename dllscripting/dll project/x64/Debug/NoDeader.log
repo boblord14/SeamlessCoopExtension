@@ -1,13 +1,9 @@
 ﻿  dllmain.cpp
 C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\PE.h(248,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(27,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(32,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(37,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(76,32): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(77,33): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(78,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-Zydis.lib(Decoder.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Decoder.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
-Zydis.lib(Register.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Register.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
-Zydis.lib(DecoderData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(DecoderData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
-Zydis.lib(SharedData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(SharedData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(52,3): warning C4551: function call missing argument list
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(57,3): warning C4551: function call missing argument list
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(62,3): warning C4551: function call missing argument list
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(105,32): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(106,33): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(107,31): warning C4305: 'initializing': truncation from 'double' to 'float'
   NoDeader.vcxproj -> C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\NoDeader.dll

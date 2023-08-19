@@ -1,17 +1,18 @@
 #pragma once
 class aobaddress{
 	private:
-	void* address;
+		void* address;
 	public:
 		void* GetAddress() { return address; };
 };
 
 class WorldChrMan : aobaddress {
-public:
-	WorldChrMan();
-	bool validateAobUsage();
-	bool loadMainAobs();
-	int getHP();
-	int setHP(int value);
-
+	public:
+		WorldChrMan();
+		bool validateAobUsage();
+		bool loadMainAobs();
+		int getHP();
+		int setHP(int value);
+	private:
+		void** getWorldChrMan();
 };

@@ -9,21 +9,46 @@
 
 using namespace ModUtils;
 
-using FnSetEventFlag = void (*)(const uint64_t event_man, uint32_t* event_id, bool state);
-using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
-using FnEraseEffect = void (*)(void* CSSpecialEffect, int spEffectId);
-
 struct SpEffectOut {
 	void* paramEntry;
 	int spEffectId;
 	int : 4;
 };
 
+struct StaggerModule {
+	uint8_t undefined[0x10];
+	float stagger;
+	float staggerMax;
+	uint8_t undefined2[0x4];
+	float resetTimer;
+};
+
+struct ChrModuleBag {
+	uint8_t undefined[0x40];
+	StaggerModule* staggerModule;
+};
+
+struct ChrIns {
+	uint8_t undefined[0x8];
+	unsigned long long handle;
+	uint8_t undefined2[0x180];
+	ChrModuleBag* chrModulelBag;
+	uint8_t undefined3[0x508];
+	unsigned long long targetHandle;
+};
+
+using FnSetEventFlag = void (*)(const uint64_t event_man, uint32_t* event_id, bool state);
+using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
+using FnEraseEffect = void (*)(void* CSSpecialEffect, int spEffectId);
+using FnEntityToChrIns = ChrIns* (*)(int* entityId);
+
+
+
 #define IBO_GET_SPEFFECTPARAM_FN 0xD19B30
 
 void spEffectParamHook(SpEffectOut& out, int paramId) {//basic hooking example from callhook. prints out a console output on specific effects when theyre called
 	//hooking applyEffect seems to act up so I didn't use that one
-	if (paramId == 3515) {
+	if (paramId == 3520) {
 		AllocConsole;
 		Log("player used str knot effect, effect id:");
 		Log(paramId);
@@ -56,16 +81,20 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	Signature spEffectRemoveCall = Signature("48 83 EC 28 8B C2 48 8B 51 08 48 85 D2 ?? ?? 90");
 	Signature eventFlagManager = Signature("48 8B 3D ?? ?? ?? ?? 48 85 FF ?? ?? 32 C0 E9");
 	Signature eventFlagSetCall = Signature("?? ?? ?? ?? ?? 48 89 74 24 18 57 48 83 EC 30 48 8B DA 41 0F B6 F8 8B 12 48 8B F1 85 D2 0F 84 ?? ?? ?? ?? 45 84 C0");
+	Signature entityIdtoChrInsCall = Signature("48 89 5c 24 08 48 89 74 24 10 48 89 7c 24 18 41 56 48 83 ec ?? 48 8b 3d ?? ?? ?? ?? 33 db 49 8b f0 4c 8b f1 48 85 ff");
 
 	void** WorldChrManIns = (void**)worldChrManSig.Scan(&EldenRingData, 0x3, 0x7);
 	void** speApplyCallIns = (void**)spEffectApplyCall.Scan(&EldenRingData);
 	void** speRemoveCallIns = (void**)spEffectRemoveCall.Scan(&EldenRingData);
 	void** eventFlagMan = (void**)eventFlagManager.Scan(&EldenRingData, 0x3, 0x7);
 	void** eventSetIns = (void**)eventFlagSetCall.Scan(&EldenRingData);
+	void** entityIdtoChrInsIns = (void**)entityIdtoChrInsCall.Scan(&EldenRingData);
 
 	FnApplyEffect applyEffect = reinterpret_cast<FnApplyEffect>(reinterpret_cast<uint8_t*>(speApplyCallIns));
 	FnEraseEffect removeEffect = reinterpret_cast<FnEraseEffect>(reinterpret_cast<uint8_t*>(speRemoveCallIns));
 	FnSetEventFlag setEventFlag = reinterpret_cast<FnSetEventFlag>(reinterpret_cast<uint8_t*>(eventSetIns));
+	FnEntityToChrIns getChrInsFromEntityId = reinterpret_cast<FnEntityToChrIns>(reinterpret_cast<uint8_t*>(entityIdtoChrInsIns));
+
 
 	AllocConsole();
 	FILE* f;
@@ -103,6 +132,28 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 			auto playerHP = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0, 0x138);
 			*playerHP = 0;
 
+		}
+		else if (GetAsyncKeyState(VK_NUMPAD4) & 1) {
+			WorldChrMan = *(uintptr_t*)WorldChrManIns;
+			auto chrIns = PointerChain::make<void*>(WorldChrMan, 0x1E508);
+			applyEffect(*chrIns, 3520);
+			Log("custom effect triggered");
+		}
+		else if (GetAsyncKeyState(VK_NUMPAD5) & 1) {
+			WorldChrMan = *(uintptr_t*)WorldChrManIns;
+			auto chrIns = PointerChain::make<ChrIns*>(WorldChrMan, 0x1E508);
+			Log("player chrIns address via pointerchain:");
+			Log(*chrIns);
+			int entityId = 10000;
+			ChrIns* testPlayer = getChrInsFromEntityId(&entityId);
+			Log("player chrIns address via getChrInsFromEntityId function:");
+			Log(testPlayer);
+			if (testPlayer == *chrIns) {
+				Log("Both addresses are equal");
+			}
+			else {
+				Log("Error: addresses not equal");
+			}
 		}
 
 
