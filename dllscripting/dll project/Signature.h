@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _SIGNATURE_H_
+#define _SIGNATURE_H_
+
 #include <windows.h>
 #include <vector>
 #include <stdexcept>
@@ -200,3 +202,5 @@ int Signature::hex2num(char h) {
     else if (h >= 'A' && h <= 'F') return 10 + h - 'A';
     else return 0;
 }
+
+#endif // _SIGNATURE_H_

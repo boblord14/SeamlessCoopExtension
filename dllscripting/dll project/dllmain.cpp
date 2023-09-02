@@ -1,11 +1,13 @@
 #include <Windows.h>
 
 #include "ModUtils.h"
-#include "Signature.h"
 #include "PointerChain.h"
-#include "EventFlag.h"
 #include "Psapi.h"
 #include "CallHook.h"
+
+#include "WorldChrMan.h"
+#include "EventFlag.h"
+#include "GameFunctions.h"
 
 using namespace ModUtils;
 
@@ -14,35 +16,6 @@ struct SpEffectOut {
 	int spEffectId;
 	int : 4;
 };
-
-struct StaggerModule {
-	uint8_t undefined[0x10];
-	float stagger;
-	float staggerMax;
-	uint8_t undefined2[0x4];
-	float resetTimer;
-};
-
-struct ChrModuleBag {
-	uint8_t undefined[0x40];
-	StaggerModule* staggerModule;
-};
-
-struct ChrIns {
-	uint8_t undefined[0x8];
-	unsigned long long handle;
-	uint8_t undefined2[0x180];
-	ChrModuleBag* chrModulelBag;
-	uint8_t undefined3[0x508];
-	unsigned long long targetHandle;
-};
-
-using FnSetEventFlag = void (*)(const uint64_t event_man, uint32_t* event_id, bool state);
-using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
-using FnEraseEffect = void (*)(void* CSSpecialEffect, int spEffectId);
-using FnEntityToChrIns = ChrIns* (*)(int* entityId);
-
-
 
 #define IBO_GET_SPEFFECTPARAM_FN 0xD19B30
 
@@ -74,27 +47,6 @@ void setupHooks() {
 
 DWORD WINAPI MainThread(LPVOID lpParam)
 {
-	ModuleData EldenRingData("eldenring.exe");
-	Signature worldChrManSig = Signature("48 8B 05 ?? ?? ?? ?? 48 85 C0 74 0F 48 39 88");
-
-	Signature spEffectApplyCall = Signature("48 8B C4 48 89 58 08 48 89 70 10 57 48 81 EC ?? ?? ?? ?? 0F 28 05 ?? ?? ?? ?? 48 8B F1 0F 28 0D ?? ?? ?? ?? 48 8D 48 88");
-	Signature spEffectRemoveCall = Signature("48 83 EC 28 8B C2 48 8B 51 08 48 85 D2 ?? ?? 90");
-	Signature eventFlagManager = Signature("48 8B 3D ?? ?? ?? ?? 48 85 FF ?? ?? 32 C0 E9");
-	Signature eventFlagSetCall = Signature("?? ?? ?? ?? ?? 48 89 74 24 18 57 48 83 EC 30 48 8B DA 41 0F B6 F8 8B 12 48 8B F1 85 D2 0F 84 ?? ?? ?? ?? 45 84 C0");
-	Signature entityIdtoChrInsCall = Signature("48 89 5c 24 08 48 89 74 24 10 48 89 7c 24 18 41 56 48 83 ec ?? 48 8b 3d ?? ?? ?? ?? 33 db 49 8b f0 4c 8b f1 48 85 ff");
-
-	void** WorldChrManIns = (void**)worldChrManSig.Scan(&EldenRingData, 0x3, 0x7);
-	void** speApplyCallIns = (void**)spEffectApplyCall.Scan(&EldenRingData);
-	void** speRemoveCallIns = (void**)spEffectRemoveCall.Scan(&EldenRingData);
-	void** eventFlagMan = (void**)eventFlagManager.Scan(&EldenRingData, 0x3, 0x7);
-	void** eventSetIns = (void**)eventFlagSetCall.Scan(&EldenRingData);
-	void** entityIdtoChrInsIns = (void**)entityIdtoChrInsCall.Scan(&EldenRingData);
-
-	FnApplyEffect applyEffect = reinterpret_cast<FnApplyEffect>(reinterpret_cast<uint8_t*>(speApplyCallIns));
-	FnEraseEffect removeEffect = reinterpret_cast<FnEraseEffect>(reinterpret_cast<uint8_t*>(speRemoveCallIns));
-	FnSetEventFlag setEventFlag = reinterpret_cast<FnSetEventFlag>(reinterpret_cast<uint8_t*>(eventSetIns));
-	FnEntityToChrIns getChrInsFromEntityId = reinterpret_cast<FnEntityToChrIns>(reinterpret_cast<uint8_t*>(entityIdtoChrInsIns));
-
 
 	AllocConsole();
 	FILE* f;
@@ -102,17 +54,16 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	std::cout << "Open" << std::endl;
 
 	bool NoDead = false;
-	float defaultXCoord = (-3.507);
-	float defaultYCoord = (-0.8775);
-	float defaultZCoord = (2.595);
-	uint32_t flagid = 1024622001;
-	uintptr_t WorldChrMan;
+
+	WorldChrMan mainBase = WorldChrMan::Make();
+	EventFlag mainFlag = EventFlag::Make();
+	GameFunctions mainFunctions = GameFunctions::Make();
 
 	while (true) {
 		
 		if (GetAsyncKeyState(VK_NUMPAD1) & 1) {
-			WorldChrMan = *(uintptr_t*)WorldChrManIns;
-			if (WorldChrMan) {
+
+			if (mainBase.isLoaded()) {
 				NoDead = !NoDead;
 			}
 			else {
@@ -128,67 +79,30 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 
 		}
 		else if (GetAsyncKeyState(VK_NUMPAD3) & 1) {
-			WorldChrMan = *(uintptr_t*)WorldChrManIns;
-			auto playerHP = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0, 0x138);
-			*playerHP = 0;
+			mainBase.setHP(0);
 
 		}
-		else if (GetAsyncKeyState(VK_NUMPAD4) & 1) {
-			WorldChrMan = *(uintptr_t*)WorldChrManIns;
-			auto chrIns = PointerChain::make<void*>(WorldChrMan, 0x1E508);
-			applyEffect(*chrIns, 3520);
-			Log("custom effect triggered");
-		}
-		else if (GetAsyncKeyState(VK_NUMPAD5) & 1) {
-			WorldChrMan = *(uintptr_t*)WorldChrManIns;
-			auto chrIns = PointerChain::make<ChrIns*>(WorldChrMan, 0x1E508);
-			Log("player chrIns address via pointerchain:");
-			Log(*chrIns);
-			int entityId = 10000;
-			ChrIns* testPlayer = getChrInsFromEntityId(&entityId);
-			Log("player chrIns address via getChrInsFromEntityId function:");
-			Log(testPlayer);
-			if (testPlayer == *chrIns) {
-				Log("Both addresses are equal");
-			}
-			else {
-				Log("Error: addresses not equal");
-			}
-		}
-
 
 		if (NoDead == true) {
-			WorldChrMan = *(uintptr_t*)WorldChrManIns;
-			if (WorldChrMan) {
-				auto playerHP = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0, 0x138);
-				if (*playerHP < 1) {
+			if (mainBase.isLoaded()) {
+				if (mainBase.getHP() < 1) {
 					Log("triggered");
-					auto idleAnim = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x58, 0x18);
-					auto currentAnim = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x58, 0x20);
-					auto pMaxHP = PointerChain::make<int>(WorldChrMan, 0x10EF8, 0, 0x190u, 0, 0x13C);
-					auto xCoord = PointerChain::make<float>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x68, 0x70);
-					auto yCoord = PointerChain::make<float>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x68, 0x78);
-					auto zCoord = PointerChain::make<float>(WorldChrMan, 0x10EF8, 0, 0x190u, 0x68, 0x74);
 					Sleep(100);
-					*playerHP = 1;
+					mainBase.setHP(1);
 					Sleep(1000);
-					setEventFlag((uint64_t) *eventFlagMan, &flagid, 1);
-					auto chrIns = PointerChain::make<void*>(WorldChrMan, 0x1E508);
+					mainFlag.setFlagState(1024622001, 1);
 					Sleep(1100);
-					applyEffect(*chrIns, 15022);
+					mainFunctions.applyEffect(15022, 10000);
 					Sleep(2500);
-					if (*currentAnim != 67011) {
-						*idleAnim = 67011;
+					if (mainBase.getCurrentAnimID() != 67011) {
+						mainBase.setIdleAnim(67011);
 					}
-					*xCoord = defaultXCoord;
-					*yCoord = defaultYCoord;
-					*zCoord = defaultZCoord;
-					*playerHP = *pMaxHP;
+					mainBase.setLocalCoords(-3.507, -0.8775, 2.595); //some coords in limgrave near first step
+					mainBase.setHP(mainBase.getMaxHP());
 					Sleep(2500);
-					*idleAnim = 63020;
-					setEventFlag((uint64_t)*eventFlagMan, &flagid, 0);
-					auto CSSpecialEffect = PointerChain::make<void*>(WorldChrMan, 0x1E508, 0x178);
-					removeEffect(*CSSpecialEffect, 15022);
+					mainBase.setIdleAnim(63020);
+					mainFlag.setFlagState(1024622001, 0);
+					mainFunctions.removeEffect(15022, 10000);
 				}
 			}
 			else {

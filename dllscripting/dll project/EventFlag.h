@@ -1,9 +1,24 @@
-#pragma once
+#ifndef _EVENT_FLAG_H_
+#define _EVENT_FLAG_H_
+#include "PointerChain.h"
+#include "WorldChrMan.h"
 
-extern __declspec(dllexport) bool __cdecl defGetEventFlag(const void* Manager, const unsigned int FlagID);
+using FnSetEventFlag = void (*)(const uint64_t event_man, uint32_t* event_id, bool state);
+using FnGetEventFlag = int (*)(void* manager, int flagID);
 
-extern __declspec(dllexport) void __cdecl defSetEventFlag(const void* Manager, const unsigned int FlagID, const bool State, const char Param_4);
 
-extern decltype(&::defGetEventFlag) GetEventFlag;
 
-extern decltype(&::defSetEventFlag) SetEventFlag;
+class EventFlag : public Address
+{
+private:
+	FnGetEventFlag getEventFlag;
+	FnSetEventFlag setEventFlag;
+	EventFlag(void** eventFlagMan, void** setAddr, void** getAddr);
+	static void** eventFlagManager;
+
+public:
+	static EventFlag Make();
+	bool getFlagState(int flag);
+	void setFlagState(int flag, bool state);
+};
+#endif // _EVENT_FLAG_H_
