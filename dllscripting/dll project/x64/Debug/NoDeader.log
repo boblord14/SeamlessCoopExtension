@@ -1,0 +1,5 @@
+﻿Zydis.lib(Decoder.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Decoder.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+Zydis.lib(Register.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Register.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+Zydis.lib(DecoderData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(DecoderData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+Zydis.lib(SharedData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(SharedData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+  NoDeader.vcxproj -> C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\NoDeader.dll
