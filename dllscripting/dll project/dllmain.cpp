@@ -79,6 +79,7 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 				}
 				else if (GetAsyncKeyState(VK_NUMPAD3) & 1) {
 					mainBase.setHP(0);
+
 				}
 				else if (GetAsyncKeyState(VK_NUMPAD4) & 1) {
 					Log("player chrins addr");

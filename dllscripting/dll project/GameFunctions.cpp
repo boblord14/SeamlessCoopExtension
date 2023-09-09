@@ -40,4 +40,5 @@ ChrIns* GameFunctions::getChrIns(int entityID) {
     if (address) {
         return getChrInsFromEntityId(&entityID);
     }
+    return NULL;
 }
