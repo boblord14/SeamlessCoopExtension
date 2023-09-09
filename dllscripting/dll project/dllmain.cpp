@@ -99,6 +99,7 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					Log("set chrins max hp to 200");
 					auto chrInsMaxHp = PointerChain::make<int>(currentChrIns, 0x190, 0x0, 0x144);
 					*chrInsMaxHp = 200;
+
 				}
 
 				if (NoDead == true) {
