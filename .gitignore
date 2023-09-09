@@ -3,3 +3,8 @@ dllscripting/dll project/.vs
 dllscripting/dll project/x64/
 dllscripting/CallHook*
 dllscripting/dll project/x64/Debug/
+*.obj
+*.log
+*.pdb
+*.tlog
+*.idb
