@@ -80,6 +80,9 @@
     <ClCompile Include="GameFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="signature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zycore\Zycore.lib" />

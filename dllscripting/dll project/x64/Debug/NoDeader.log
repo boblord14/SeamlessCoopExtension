@@ -1,27 +1,5 @@
-﻿  EventFlag.cpp
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\EventFlag.cpp(25,14): warning C4305: 'return': truncation from 'int' to 'bool'
-  GameFunctions.cpp
-  WorldChrMan.cpp
-  dllmain.cpp
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\PE.h(248,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(25,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(30,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(35,3): warning C4551: function call missing argument list
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\dllmain.cpp(100,52): warning C4305: 'argument': truncation from 'double' to 'float'
-  Generating Code...
-GameFunctions.obj : error LNK2005: "public: __cdecl ModuleData::ModuleData(char const *)" (??0ModuleData@@QEAA@PEBD@Z) already defined in EventFlag.obj
-GameFunctions.obj : error LNK2005: "public: __cdecl Signature::Signature(char const *,int)" (??0Signature@@QEAA@PEBDH@Z) already defined in EventFlag.obj
-GameFunctions.obj : error LNK2005: "public: void * __cdecl Signature::GetRelativeOffset(int,int)" (?GetRelativeOffset@Signature@@QEAAPEAXHH@Z) already defined in EventFlag.obj
-GameFunctions.obj : error LNK2005: "public: void * __cdecl Signature::Scan(struct ModuleData *,enum ScanOffset)" (?Scan@Signature@@QEAAPEAXPEAUModuleData@@W4ScanOffset@@@Z) already defined in EventFlag.obj
-GameFunctions.obj : error LNK2005: "private: static int __cdecl Signature::hex2num(char)" (?hex2num@Signature@@CAHD@Z) already defined in EventFlag.obj
-WorldChrMan.obj : error LNK2005: "public: __cdecl ModuleData::ModuleData(char const *)" (??0ModuleData@@QEAA@PEBD@Z) already defined in EventFlag.obj
-WorldChrMan.obj : error LNK2005: "public: __cdecl Signature::Signature(char const *,int)" (??0Signature@@QEAA@PEBDH@Z) already defined in EventFlag.obj
-WorldChrMan.obj : error LNK2005: "public: void * __cdecl Signature::GetRelativeOffset(int,int)" (?GetRelativeOffset@Signature@@QEAAPEAXHH@Z) already defined in EventFlag.obj
-WorldChrMan.obj : error LNK2005: "public: void * __cdecl Signature::Scan(struct ModuleData *,enum ScanOffset)" (?Scan@Signature@@QEAAPEAXPEAUModuleData@@W4ScanOffset@@@Z) already defined in EventFlag.obj
-WorldChrMan.obj : error LNK2005: "private: static int __cdecl Signature::hex2num(char)" (?hex2num@Signature@@CAHD@Z) already defined in EventFlag.obj
-Zydis.lib(Decoder.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Decoder.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
+﻿Zydis.lib(Decoder.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Decoder.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
 Zydis.lib(Register.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(Register.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
 Zydis.lib(DecoderData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(DecoderData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
 Zydis.lib(SharedData.obj) : warning LNK4099: PDB 'Zydis.pdb' was not found with 'Zydis.lib(SharedData.obj)' or at 'C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\Zydis.pdb'; linking object as if no debug info
-EventFlag.obj : error LNK2001: unresolved external symbol "private: static void * * EventFlag::eventFlagManager" (?eventFlagManager@EventFlag@@0PEAPEAXEA)
-C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\NoDeader.dll : fatal error LNK1120: 1 unresolved externals
+  NoDeader.vcxproj -> C:\Users\false\Desktop\RIT Things\swen261\SeamlessCoopExtension\dllscripting\dll project\x64\Debug\NoDeader.dll

@@ -41,5 +41,6 @@ public:
 	static GameFunctions Make();
 	void applyEffect(int spEffectId, int entityID);
 	void removeEffect(int spEffectId, int entityID);
+	ChrIns* getChrIns(int entityID);
 };
 #endif // _GAME_FUNCTIONS_H_

@@ -8,17 +8,18 @@ using FnGetEventFlag = int (*)(void* manager, int flagID);
 
 
 
-class EventFlag : public Address
+class EventFlag
 {
+
 private:
-	FnGetEventFlag getEventFlag;
-	FnSetEventFlag setEventFlag;
-	EventFlag(void** eventFlagMan, void** setAddr, void** getAddr);
+	uint32_t id;
+	
 	static void** eventFlagManager;
 
+
 public:
-	static EventFlag Make();
-	bool getFlagState(int flag);
-	void setFlagState(int flag, bool state);
+	EventFlag(uint32_t id);
+	bool getFlagState();
+	void setFlagState(bool state);
 };
 #endif // _EVENT_FLAG_H_

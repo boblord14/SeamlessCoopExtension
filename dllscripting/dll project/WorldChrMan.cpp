@@ -30,7 +30,8 @@ bool WorldChrMan::isLoaded() {
 
 WorldChrMan WorldChrMan::Make() {
     void** WorldChrManIns = InitHelper();
-    return WorldChrMan(WorldChrManIns);
+    if(*WorldChrManIns != NULL)
+        return WorldChrMan(WorldChrManIns);
 }
 
 int WorldChrMan::getHP() {

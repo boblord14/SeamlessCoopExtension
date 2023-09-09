@@ -23,15 +23,21 @@ GameFunctions GameFunctions::Make() {
 void GameFunctions::applyEffect(int spEffectId, int entityID)
 {
     if (address) {
-        applyEffectChrIns(getChrInsFromEntityId(&entityID), spEffectId);
+        applyEffectChrIns(getChrIns(entityID), spEffectId);
     }
 }
 
 void GameFunctions::removeEffect(int spEffectId, int entityID)
 {
     if (address) {
-        ChrIns* entity = getChrInsFromEntityId(&entityID);
+        ChrIns* entity = getChrIns(entityID);
         auto CSSpecialEffect = PointerChain::make<void*>(entity, 0x178);
         removeEffectChrIns(*CSSpecialEffect, spEffectId);
+    }
+}
+
+ChrIns* GameFunctions::getChrIns(int entityID) {
+    if (address) {
+        return getChrInsFromEntityId(&entityID);
     }
 }
