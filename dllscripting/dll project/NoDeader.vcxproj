@@ -155,6 +155,7 @@
     <ClInclude Include="HookTemplates.h" />
     <ClInclude Include="ini.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="MinHook_133_bin\include\MinHook.h" />
     <ClInclude Include="ModUtils.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PE.h" />
@@ -178,6 +179,8 @@
   <ItemGroup>
     <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zycore\Zycore.lib" />
     <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zydis.lib" />
+    <Library Include="MinHook_133_bin\bin\MinHook.x64.lib" />
+    <Library Include="MinHook_133_bin\bin\MinHook.x86.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

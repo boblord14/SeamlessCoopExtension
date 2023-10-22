@@ -17,8 +17,6 @@ struct SpEffectOut {
 	int : 4;
 };
 
-#define IBO_GET_SPEFFECTPARAM_FN 0xD19B30
-
 void spEffectParamHook(SpEffectOut& out, int paramId) {//basic hooking example from callhook. prints out a console output on specific effects when theyre called
 	//hooking applyEffect seems to act up so I didn't use that one
 	if (paramId == 3520) {
@@ -35,11 +33,13 @@ void spEffectParamHook(SpEffectOut& out, int paramId) {//basic hooking example f
 	}
 }
 
+#define IBO_GET_SPEFFECTPARAM_FN 0xD19B30
+
 void setupHooks() {
 	if (!CallHook::initialize()) return;
 	CallHook::CallMap callMap{};
-	auto calls = callMap.getCalls(IBO_GET_SPEFFECTPARAM_FN);
-	auto hook1 = CallHook::hookFunction<EntryHook>(calls, spEffectParamHook);
+	auto callSpEffect = callMap.getCalls(IBO_GET_SPEFFECTPARAM_FN);
+	auto hook1 = CallHook::hookFunction<EntryHook>(callSpEffect, spEffectParamHook);
 }
 
 DWORD WINAPI MainThread(LPVOID lpParam)
@@ -74,7 +74,8 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 				}
 				else if (GetAsyncKeyState(VK_NUMPAD2) & 1) {
 					setupHooks();
-					std::cout << "applyEffect hook enabled" << std::endl;
+					mainFunctions.initalizeDmgHook();
+					std::cout << "applyEffect/lastHit hook enabled" << std::endl;
 
 				}
 				else if (GetAsyncKeyState(VK_NUMPAD3) & 1) {
@@ -100,7 +101,10 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 					Log("set chrins max hp to 200");
 					auto chrInsMaxHp = PointerChain::make<int>(currentChrIns, 0x190, 0x0, 0x144);
 					*chrInsMaxHp = 200;
-
+				}
+				else if (GetAsyncKeyState(VK_NUMPAD8) & 1) {
+					Log("chrIns addr of entity that last hit the player:");
+					Log(mainFunctions.getLastHitByEntity());
 				}
 
 				if (NoDead == true) {

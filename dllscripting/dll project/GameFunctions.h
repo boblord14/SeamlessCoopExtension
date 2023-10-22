@@ -25,22 +25,42 @@ struct ChrIns {
 	unsigned long long targetHandle;
 };
 
+struct DamageStruct {
+	char unk[0x228];
+	int damage;
+};
+
+struct ChrDamageModule {
+    char unk[0x8];
+    ChrIns *playerIns;
+};
+
+typedef void AddDamage(ChrDamageModule *damageModule, ChrIns *chrIns, DamageStruct *damageStruct, unsigned long long param_4, char param_5);
+
 using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
 using FnRemoveEffect = void (*)(void* CSSpecialEffect, int spEffectId);
 using FnEntityToChrIns = ChrIns * (*)(int* entityId);
 
+
 class GameFunctions : public Address
 {
+
 private:
 	FnApplyEffect applyEffectChrIns;
 	FnRemoveEffect removeEffectChrIns;
 	FnEntityToChrIns getChrInsFromEntityId;
+	static void storeLastHitByEntity(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5);
 	GameFunctions(void** eventFlagMan, void** setAddr, void** getAddr, void** worldChrMan);
+	
+
 
 public:
 	static GameFunctions Make();
 	void applyEffect(int spEffectId, int entityID);
 	void removeEffect(int spEffectId, int entityID);
 	ChrIns* getChrIns(int entityID);
+	ChrIns* getLastHitByEntity();
+	bool initalizeDmgHook();
+
 };
 #endif // _GAME_FUNCTIONS_H_

@@ -63,6 +63,9 @@
     <ClInclude Include="GameFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MinHook_133_bin\include\MinHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -85,7 +88,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zycore\Zycore.lib" />
-    <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zydis.lib" />
+    <Library Include="MinHook_133_bin\bin\MinHook.x64.lib">
+      <Filter>Source Files</Filter>
+    </Library>
+    <Library Include="MinHook_133_bin\bin\MinHook.x86.lib">
+      <Filter>Source Files</Filter>
+    </Library>
+    <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zycore\Zycore.lib">
+      <Filter>Source Files</Filter>
+    </Library>
+    <Library Include="CallHook-8ec01c8ca7be5084332eb9aae88664e909cec0fb\thirdparty\zydis\include\Zydis\Zydis.lib">
+      <Filter>Source Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>
