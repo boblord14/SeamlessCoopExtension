@@ -8,6 +8,7 @@
 #include "WorldChrMan.h"
 #include "EventFlag.h"
 #include "GameFunctions.h"
+#include "Signature.h"
 
 using namespace ModUtils;
 
@@ -15,6 +16,16 @@ struct SpEffectOut {
 	void* paramEntry;
 	int spEffectId;
 	int : 4;
+};
+
+struct DamageStruct {
+	char unk[0x228];
+	int damage;
+};
+
+struct ChrDamageModule {
+	char unk[0x8];
+	ChrIns* playerIns;
 };
 
 #define IBO_GET_SPEFFECTPARAM_FN 0xD19B30
@@ -35,11 +46,32 @@ void spEffectParamHook(SpEffectOut& out, int paramId) {//basic hooking example f
 	}
 }
 
+ChrIns* lastEntityHitBy;
+
+void storeLastHitByEntity(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5) {
+
+	GameFunctions tempFunctions = GameFunctions::Make();
+
+	if (damageModule->playerIns == (tempFunctions.getChrIns(10000))) { //confirming the player is the one being attacked here
+		if (damageStruct->damage != 0) {
+			lastEntityHitBy = chrIns;
+			Log("chrIns addr of entity that last hit player:");
+			Log(lastEntityHitBy);
+		}
+	}
+}
+
 void setupHooks() {
 	if (!CallHook::initialize()) return;
 	CallHook::CallMap callMap{};
-	auto calls = callMap.getCalls(IBO_GET_SPEFFECTPARAM_FN);
-	auto hook1 = CallHook::hookFunction<EntryHook>(calls, spEffectParamHook);
+
+	ModuleData EldenRingData("eldenring.exe");
+	Signature applyDmgCall = Signature("4C 8B DC 55 53 56 57 41 56 41 57 49 8D 6B 88 48 81 EC 48 01 00 00");
+
+	auto calls = callMap.getCalls(applyDmgCall.Scan(&EldenRingData));
+	auto calls2 = callMap.getCalls(IBO_GET_SPEFFECTPARAM_FN);
+	auto hook1 = CallHook::hookFunction<EntryHook>(calls, storeLastHitByEntity);
+	auto hook2 = CallHook::hookFunction<EntryHook>(calls, spEffectParamHook);
 }
 
 DWORD WINAPI MainThread(LPVOID lpParam)
