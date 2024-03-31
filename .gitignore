@@ -1,10 +1,16 @@
-dllscripting/.vs
-dllscripting/dll project/.vs
-dllscripting/dll project/x64/
-dllscripting/dll project/CallHook*
-dllscripting/dll project/x64/Debug/
+dllscripting- visual studio branch/.vs
+dllscripting- visual studio branch/dll project/.vs
+dllscripting- visual studio branch/dll project/x64/
+dllscripting- visual studio branch/dll project/CallHook*
+dllscripting- visual studio branch/dll project/x64/Debug/
+dllscripting- visual studio branch/thirdparty
+dllscripting- visual studio branch/visual studio dll scripting/NoDeader/x64
+dllscripting- visual studio branch/visual studio dll scripting/NoDeader/CallHook*
 *.obj
 *.log
 *.pdb
 *.tlog
 *.idb
+*.ipch
+
+
