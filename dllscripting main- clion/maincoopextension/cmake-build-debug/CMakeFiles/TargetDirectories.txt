@@ -1,0 +1,3 @@
+C:/Users/false/Desktop/RIT Things/swen261/SeamlessCoopExtension/dllscripting- clion branch/maincoopextension/cmake-build-debug/CMakeFiles/maincoopextension.dir
+C:/Users/false/Desktop/RIT Things/swen261/SeamlessCoopExtension/dllscripting- clion branch/maincoopextension/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/false/Desktop/RIT Things/swen261/SeamlessCoopExtension/dllscripting- clion branch/maincoopextension/cmake-build-debug/CMakeFiles/rebuild_cache.dir
