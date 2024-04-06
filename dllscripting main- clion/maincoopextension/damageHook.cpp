@@ -16,11 +16,8 @@ void damageHook::storeLastHitByEntity(ChrDamageModule* damageModule, ChrIns* chr
     std::cout << "hook function running" << std::endl;
 
      if (damageModule->playerIns == (gameFunctions->getChrIns(10000))) { //confirming the player is the one being attacked here
-         std::cout << "player hit by enemy" << std::endl;
          if (damageStruct->damage != 0) {
-             std::cout << "player damaged by enemy" << std::endl;
-             std::cout << "charIns addr of the entity that just hit the player: " << std::endl;
-             std::cout << std::hex<< chrIns << std::endl;
+             std::cout << "player damaged by enemy, chrIns addr " << std::hex<< chrIns << std::endl;
              GameFunctions::setLastHitByEntity(chrIns);
          }
      }

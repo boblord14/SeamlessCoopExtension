@@ -22,6 +22,12 @@ DWORD WINAPI MainThread(LPVOID lpParam)
     FILE* f;
     freopen_s(&f, "CONOUT$", "w", stdout);
     std::cout << "Open" << std::endl;
+    std::cout << "CURRENT FUNCTIONS" << std::endl;
+    std::cout << "_________________" << std::endl;
+    std::cout << "f11- printline test" << std::endl;
+    std::cout << "f10- enable damage hook" << std::endl;
+    std::cout << "f9- get player chrins address from gamefunctions" << std::endl;
+    std::cout << "f8- apply speffect to entity that last hit player(requires damagehook)" << std::endl;
 
     gameFunctions = GameFunctions::Make();
 
@@ -39,6 +45,10 @@ DWORD WINAPI MainThread(LPVOID lpParam)
             }
 		}else if (GetAsyncKeyState(VK_F9) & 1) {
             std::cout << "player chrins addr via dllmain gamefunctions: " << std::hex << gameFunctions->getChrIns(10000) << std::dec << std::endl;
+        }else if (GetAsyncKeyState(VK_F8) & 1) {
+            std::cout << "chrins addr of entity who last hit player: " << std::hex << gameFunctions->getLastHitByEntity() << std::dec << std::endl;
+            std::cout << "applying speffect to entity" << std::endl;
+            gameFunctions->applyEffect(1790300, gameFunctions->getLastHitByEntity());
         }
 	}
 	myfile.close();

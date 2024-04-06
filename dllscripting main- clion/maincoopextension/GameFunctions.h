@@ -24,7 +24,9 @@ public:
 
 	static std::unique_ptr<GameFunctions> Make();
 	void applyEffect(int spEffectId, int entityID);
+    void applyEffect(int spEffectId, ChrIns* ChrIns);
 	void removeEffect(int spEffectId, int entityID);
+    void removeEffect(int spEffectId, ChrIns* ChrIns);
 	ChrIns* getChrIns(int entityID);
 	static ChrIns* getLastHitByEntity();
 	static void setLastHitByEntity(ChrIns* data);

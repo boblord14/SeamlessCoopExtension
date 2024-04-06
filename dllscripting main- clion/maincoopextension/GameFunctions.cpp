@@ -1,4 +1,4 @@
-#include "GameFunctions.h"
+ #include "GameFunctions.h"
 #include "Signature.h"
 #include "MinHook.h"
 #include "ModUtils.h"
@@ -35,6 +35,12 @@ void GameFunctions::applyEffect(int spEffectId, int entityID)
         applyEffectChrIns(getChrIns(entityID), spEffectId);
     }
 }
+ void GameFunctions::applyEffect(int spEffectId, ChrIns* ChrIns)
+ {
+     if (address) {
+         applyEffectChrIns(ChrIns, spEffectId);
+     }
+ }
 
 void GameFunctions::removeEffect(int spEffectId, int entityID)
 {
@@ -44,6 +50,14 @@ void GameFunctions::removeEffect(int spEffectId, int entityID)
         removeEffectChrIns(*CSSpecialEffect, spEffectId);
     }
 }
+
+ void GameFunctions::removeEffect(int spEffectId, ChrIns* ChrIns)
+ {
+     if (address) {
+         auto CSSpecialEffect = PointerChain::make<void*>(ChrIns, 0x178);
+         removeEffectChrIns(*CSSpecialEffect, spEffectId);
+     }
+ }
 
 ChrIns* GameFunctions::getChrIns(int entityID) {
     if (address) {
