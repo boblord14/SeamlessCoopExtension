@@ -21,6 +21,8 @@ add_library(maincoopextension SHARED dllmain.cpp
         WorldChrMan.h
         damageHook.cpp
         damageHook.h
+        ModFunctions.cpp
+        ModFunctions.h
 )
 target_link_libraries(maincoopextension ${CMAKE_CURRENT_SOURCE_DIR}/MinHook.x64.lib)
 

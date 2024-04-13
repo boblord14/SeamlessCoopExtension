@@ -8,7 +8,7 @@
 using FnApplyEffect = void (*)(void* ChrIns, int spEffectId);
 using FnRemoveEffect = void (*)(void* CSSpecialEffect, int spEffectId);
 using FnEntityToChrIns = ChrIns * (*)(int* entityId);
-static ChrIns* lastEntityHitBy;
+
 
 class GameFunctions : public Address
 {
@@ -28,8 +28,6 @@ public:
 	void removeEffect(int spEffectId, int entityID);
     void removeEffect(int spEffectId, ChrIns* ChrIns);
 	ChrIns* getChrIns(int entityID);
-	static ChrIns* getLastHitByEntity();
-	static void setLastHitByEntity(ChrIns* data);
     bool enableDamageHooking();
 
 };

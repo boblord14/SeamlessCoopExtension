@@ -38,6 +38,7 @@ struct ChrDamageModule {
 };
 
 typedef void AddDamage(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5);
+static ChrIns* lastEntityHitBy;
 
 class damageHook{
 
@@ -45,6 +46,8 @@ class damageHook{
     static void setDamageOriginal(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5);public:
     static bool initalizeDmgHook();
     static AddDamage* addDamageOriginal;
+    static ChrIns* getLastHitByEntity();
+    static void setLastHitByEntity(ChrIns* data);
 };
 
 

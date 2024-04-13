@@ -66,14 +66,6 @@ ChrIns* GameFunctions::getChrIns(int entityID) {
     return nullptr;
 }
 
-void GameFunctions::setLastHitByEntity(ChrIns* data) {
-    lastEntityHitBy = data;
-}
-
-ChrIns* GameFunctions::getLastHitByEntity() {
-    return lastEntityHitBy;
-}
-
 bool GameFunctions::enableDamageHooking(){
     return damageHook::initalizeDmgHook();
 }
