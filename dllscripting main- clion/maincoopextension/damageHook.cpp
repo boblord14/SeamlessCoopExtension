@@ -12,6 +12,9 @@ extern std::unique_ptr<GameFunctions> gameFunctions;
 
 AddDamage* damageHook::addDamageOriginal = nullptr;
 
+//check where in the damage this is
+//does this occur before or after the actual player's hp changes?
+//TODO: check via comparing the player's hp at the moment this script runs- is this the player hp pre or post damage calculation
 void damageHook::storeLastHitByEntity(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5) {
     std::cout << "hook function running" << std::endl;
 
@@ -56,6 +59,9 @@ void damageHook::setDamageOriginal(ChrDamageModule* damageModule, ChrIns* chrIns
     addDamageOriginal(damageModule, chrIns, damageStruct, param_4, param_5);
 }
 
+//TODO: use a map and track for every player in lobby, not just the player character
+//update the modfunctions attribution stuff accordingly
+//log this somewhere as well.
 void damageHook::setLastHitByEntity(ChrIns* data) {
     lastEntityHitBy = data;
 }

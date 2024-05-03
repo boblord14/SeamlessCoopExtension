@@ -66,7 +66,14 @@ ChrIns* GameFunctions::getChrIns(int entityID) {
     return nullptr;
 }
 
+ int GameFunctions::getEntityID(ChrIns *chrins) {
+     int entityID = *PointerChain::make<int>(chrins, 0x1E8); //thanks to dasaav for the offset
+     return entityID;
+ }
+
+
 bool GameFunctions::enableDamageHooking(){
     return damageHook::initalizeDmgHook();
 }
+
 

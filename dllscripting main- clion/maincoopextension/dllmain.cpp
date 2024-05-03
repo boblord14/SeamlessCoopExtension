@@ -65,8 +65,13 @@ DWORD WINAPI MainThread(LPVOID lpParam)
 	myfile.close();
 	return 0;
 }
-
-/* old nodead code, port this in when able. 
+//TODO: build this logic back in and the false death functionality
+//full while loop- if host
+//wait for someone's hp to hit 0, do nothing otherwise
+//then break and do kill attribution
+//then check your own hp and do the respawn
+/* old nodead code, port this in.
+ *
  * if (NoDead == true) {
 				if (mainBase.isLoaded()) {
 					if (mainBase.getHP() < 1) {

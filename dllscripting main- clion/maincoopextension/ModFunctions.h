@@ -8,6 +8,7 @@
 #include <map>
 #include "GameFunctions.h"
 
+//change this to an unordered map
 static std::map<ChrIns*, int> main_player_table;
 class ModFunctions{
 

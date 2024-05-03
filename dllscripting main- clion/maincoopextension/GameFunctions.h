@@ -28,6 +28,7 @@ public:
 	void removeEffect(int spEffectId, int entityID);
     void removeEffect(int spEffectId, ChrIns* ChrIns);
 	ChrIns* getChrIns(int entityID);
+    int getEntityID(ChrIns* chrins);
     bool enableDamageHooking();
 
 };

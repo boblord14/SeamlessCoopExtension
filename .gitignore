@@ -6,7 +6,7 @@ dllscripting- visual studio branch/dll project/x64/Debug/
 dllscripting- visual studio branch/thirdparty
 dllscripting- visual studio branch/visual studio dll scripting/NoDeader/x64
 dllscripting- visual studio branch/visual studio dll scripting/NoDeader/CallHook*
-dllscripting- clion branch/maincoopextension/cmake-build-debug
+dllscripting main- clion/maincoopextension/cmake-build-debug/
 *.obj
 *.log
 *.pdb
@@ -14,4 +14,6 @@ dllscripting- clion branch/maincoopextension/cmake-build-debug
 *.idb
 *.ipch
 
-
+.idea/vcs.xml
+/dllscripting main- clion/maincoopextension/cmake-build-debug/CMakeFiles
+dllscripting main- clion/maincoopextension/cmake-build-debug/CMakeFiles/3.27.8/CompilerIdCXX/CMakeCXXCompilerId.exe
