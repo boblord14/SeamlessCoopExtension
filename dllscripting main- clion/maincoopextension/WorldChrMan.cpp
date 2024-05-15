@@ -35,6 +35,7 @@ WorldChrMan WorldChrMan::Make() {
     WorldChrManIns = InitHelper();
     if(*WorldChrManIns != NULL)
         return WorldChrMan(WorldChrManIns);
+    else return nullptr;
 }
 
 int WorldChrMan::getHP() {
