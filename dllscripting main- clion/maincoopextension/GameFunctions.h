@@ -10,6 +10,7 @@ using FnRemoveEffect = void (*)(void* CSSpecialEffect, int spEffectId);
 using FnEntityToChrIns = ChrIns * (*)(int* entityId);
 
 
+
 class GameFunctions : public Address
 {
 

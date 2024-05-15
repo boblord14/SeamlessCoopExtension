@@ -1,6 +1,7 @@
 //
 // Created by false on 3/30/2024.
 //
+#include "WorldChrMan.h"
 #include "GameFunctions.h"
 #include "Signature.h"
 #include "MinHook.h"
@@ -8,20 +9,24 @@
 #include "pch.h"
 #include "damageHook.h"
 
+
 extern std::unique_ptr<GameFunctions> gameFunctions;
 
 AddDamage* damageHook::addDamageOriginal = nullptr;
 
 //check where in the damage this is
 //does this occur before or after the actual player's hp changes?
-//TODO: check via comparing the player's hp at the moment this script runs- is this the player hp pre or post damage calculation
+//this is the actual value to subtract from the entity's hp. the damage number in damageStruct is the value removed from the chrins in damageModule's health
 void damageHook::storeLastHitByEntity(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5) {
     std::cout << "hook function running" << std::endl;
+    std::cout << "damage target: " << gameFunctions->getEntityID(damageModule->playerIns) << " address: "<< std::hex<< damageModule->playerIns << std::dec << "value: " << damageStruct->damage << std::endl;
 
-     if (damageModule->playerIns == (gameFunctions->getChrIns(10000))) { //confirming the player is the one being attacked here
+    int playerSlot = WorldChrMan::getPlayerSlotFromChrIns(damageModule->playerIns);
+     if (playerSlot != -1) { //confirming the player is the one being attacked here
          if (damageStruct->damage != 0) {
              std::cout << "player damaged by enemy, chrIns addr " << std::hex<< chrIns << std::endl;
-             damageHook::setLastHitByEntity(chrIns);
+             std::cout << "damage received:" << std::dec << damageStruct->damage << std::endl;
+             damageHook::setLastHitByEntity(playerSlot, chrIns);
          }
      }
     damageHook::setDamageOriginal(damageModule, chrIns, damageStruct, param_4, param_5);
@@ -59,13 +64,10 @@ void damageHook::setDamageOriginal(ChrDamageModule* damageModule, ChrIns* chrIns
     addDamageOriginal(damageModule, chrIns, damageStruct, param_4, param_5);
 }
 
-//TODO: use a map and track for every player in lobby, not just the player character
-//update the modfunctions attribution stuff accordingly
-//log this somewhere as well.
-void damageHook::setLastHitByEntity(ChrIns* data) {
-    lastEntityHitBy = data;
+void damageHook::setLastHitByEntity(int playerSlot, ChrIns* data) {
+    player_hit_table[playerSlot] = data;
 }
 
-ChrIns* damageHook::getLastHitByEntity() {
-    return lastEntityHitBy;
+ChrIns* damageHook::getLastHitByEntity(int playerSlot) {
+    return player_hit_table[playerSlot];
 }

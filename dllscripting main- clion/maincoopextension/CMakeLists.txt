@@ -23,6 +23,8 @@ add_library(maincoopextension SHARED dllmain.cpp
         damageHook.h
         ModFunctions.cpp
         ModFunctions.h
+        EventFlag.cpp
+        EventFlag.cpp
 )
 target_link_libraries(maincoopextension ${CMAKE_CURRENT_SOURCE_DIR}/MinHook.x64.lib)
 

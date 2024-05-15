@@ -1,6 +1,14 @@
 #ifndef _WORLD_CHR_MAN_H_
 #define _WORLD_CHR_MAN_H_
+
 #include "PointerChain.h"
+#include "damageHook.h"
+
+struct PlayerStruct {
+    ChrIns* playerIns;
+    char unk[0x8];
+};
+
 
 using PlayerHpPointer = decltype(PointerChain::make<int>(uintptr_t(), 0x10EF8, 0, 0x190u, 0, 0x138));
 using PlayerMaxHpPointer = decltype(PointerChain::make<int>(uintptr_t(), 0x10EF8, 0, 0x190u, 0, 0x13C));
@@ -31,6 +39,7 @@ private:
     PlayerLocalYCoord lycoord;
     PlayerLocalZCoord lzcoord;
     WorldChrMan(void** address);
+    static bool readBitFlag(int value, int pos);
 
 public:
     static WorldChrMan Make();
@@ -42,5 +51,7 @@ public:
     int getCurrentAnimID();
     void setLocalCoords(float x, float y, float z);
     int getCurrentAnimIdForOtherPlayer(int playerSlot);
+    static int getPlayerSlotFromChrIns(ChrIns* chrIns);
+    bool isInIframes(int playerSlot);
 };
 #endif // _WORLD_CHR_MAN_H_

@@ -66,6 +66,8 @@ ChrIns* GameFunctions::getChrIns(int entityID) {
     return nullptr;
 }
 
+//TODO: does entityid shift if player leaves session?
+// ex. 10000, 10001, 10002 and player 10001 leaves, does it go 10000, 10001 and shift ids or 10000, 10002?
  int GameFunctions::getEntityID(ChrIns *chrins) {
      int entityID = *PointerChain::make<int>(chrins, 0x1E8); //thanks to dasaav for the offset
      return entityID;

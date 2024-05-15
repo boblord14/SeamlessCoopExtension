@@ -6,6 +6,8 @@
 #include <random>
 #include "ModFunctions.h"
 
+extern std::unique_ptr<GameFunctions> gameFunctions;
+
 /*
  * Generic logging function for kill tracking. Written in a way allowing for the actual value to be set in the function call.
  * This allows for kill counts to be negative, such as if a player dies to pve a bunch instead of actual players.
@@ -70,3 +72,24 @@ std::pair<ChrIns*, int>  ModFunctions::get_best_player(){
     }
     return winner_info;
 }
+
+void ModFunctions::respawn_player(WorldChrMan *mainBase) {
+    auto respawn = EventFlag(1024622001);//custom flag for respawns
+    Sleep(100);
+    mainBase->setHP(1);
+    Sleep(1000);
+    respawn.setFlagState(true);
+    Sleep(1100);
+    gameFunctions->applyEffect(15022, 10000);
+    Sleep(2500);
+    if (mainBase->getCurrentAnimID() != 67011) {
+        mainBase->setIdleAnim(67011);
+    }
+    mainBase->setLocalCoords(-3.507f, -0.8775f, 2.595f); //some coords in limgrave near first step
+    mainBase->setHP(mainBase->getMaxHP());
+    Sleep(2500);
+    mainBase->setIdleAnim(63020);
+    respawn.setFlagState(false);
+    gameFunctions->removeEffect(15022, 10000);
+}
+

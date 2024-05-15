@@ -1,7 +1,7 @@
 //
 // Created by false on 3/30/2024.
 //
-#include "GameFunctions.h"
+#include <unordered_map>
 
 #ifndef MAINCOOPEXTENSION_DAMAGEHOOK_H
 #define MAINCOOPEXTENSION_DAMAGEHOOK_H
@@ -38,7 +38,7 @@ struct ChrDamageModule {
 };
 
 typedef void AddDamage(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5);
-static ChrIns* lastEntityHitBy;
+static std::unordered_map<int, ChrIns*> player_hit_table;
 
 class damageHook{
 
@@ -46,8 +46,8 @@ class damageHook{
     static void setDamageOriginal(ChrDamageModule* damageModule, ChrIns* chrIns, DamageStruct* damageStruct, unsigned long long param_4, char param_5);public:
     static bool initalizeDmgHook();
     static AddDamage* addDamageOriginal;
-    static ChrIns* getLastHitByEntity();
-    static void setLastHitByEntity(ChrIns* data);
+    static ChrIns* getLastHitByEntity(int playerSlot);
+    static void setLastHitByEntity(int playerSlot, ChrIns* data);
 };
 
 
