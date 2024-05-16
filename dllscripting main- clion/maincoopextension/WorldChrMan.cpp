@@ -4,11 +4,17 @@
 
 
 static void** WorldChrManIns;
+static void** GameManIns;
 
+//TODO: refactor GameMan's impl here
 void** InitHelper() {
     ModuleData EldenRingData("eldenring.exe");
     Signature worldChrManSig = Signature("48 8B 05 ?? ?? ?? ?? 48 85 C0 74 0F 48 39 88");
-    void** WorldChrManIns = (void**)worldChrManSig.Scan(&EldenRingData, 0x3, 0x7);
+    WorldChrManIns = (void**)worldChrManSig.Scan(&EldenRingData, 0x3, 0x7);
+
+    Signature gameManSig = Signature("48 8B 05 ?? ?? ?? ?? 80 B8 ?? ?? ?? ?? 0D 0F 94 C0 C3");
+    GameManIns = (void**)gameManSig.Scan(&EldenRingData, 0x3, 0x7);
+
     return WorldChrManIns;
 }
 
@@ -91,9 +97,10 @@ int WorldChrMan::getCurrentAnimIdForOtherPlayer(int playerSlot) {
     return animId; 
 }
 
-//TODO: find way to limit iteration(find num players in lobby)
+
 int WorldChrMan::getPlayerSlotFromChrIns(ChrIns *chrIns) {
-    for(int i = 0; i<0/*something?*/; i++){
+
+    for(int i = 0; i<getPlayerCount(); i++){
        ChrIns* arrayChrIns = PointerChain::make<PlayerStruct>(WorldChrManIns, 0x10EF8, i)->playerIns;
        if(arrayChrIns == chrIns) return i;
     }
@@ -113,5 +120,13 @@ bool WorldChrMan::isInIframes(int playerSlot){
     int64_t playerOffset = 0x10 * playerSlot;
     int flagData = PointerChain::make<int>(WorldChrManIns, 0x10EF8, playerOffset, 0x190, 0x8, 0x40);
     return readBitFlag(flagData, 1);
+}
+
+
+//try [[GameMan]+D60]+14(or +1C) as a total player in session value
+//horribly hacky and unclean temp solution(not even a worldchrman aob)
+int WorldChrMan::getPlayerCount(){
+    int playerCount = PointerChain::make<int>(GameManIns, 0xD60, 0x1C);//either 0x1C or 0x14 here. Unsure which
+    return playerCount;
 }
 

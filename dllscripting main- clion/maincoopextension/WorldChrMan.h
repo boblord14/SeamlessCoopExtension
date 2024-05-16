@@ -53,5 +53,6 @@ public:
     int getCurrentAnimIdForOtherPlayer(int playerSlot);
     static int getPlayerSlotFromChrIns(ChrIns* chrIns);
     bool isInIframes(int playerSlot);
+    static int getPlayerCount();
 };
 #endif // _WORLD_CHR_MAN_H_
